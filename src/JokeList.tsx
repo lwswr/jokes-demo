@@ -4,7 +4,7 @@ import { JokeListItem } from "./JokeListItem";
 import styled from "styled-components";
 
 const JokeListContainer = styled.div`
-  width: 60%;
+  width: 50%;
   display: flex;
   flex-direction: column;
   padding: 2rem;
