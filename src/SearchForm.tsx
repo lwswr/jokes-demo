@@ -2,7 +2,7 @@ import * as React from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { AppState, Categories, categories } from "./appSlice";
-import { Selector } from "./Selector";
+import { CategorySelector } from "./CategorySelector";
 
 const Form = styled.form`
   width: 100%;
@@ -15,7 +15,7 @@ const Form = styled.form`
 
 const TextInput = styled.input`
   height: 35px;
-  width: 67.5%;
+  width: 68%;
   font-family: "Nunito", sans-serif;
   border: 1px solid lightgrey;
   border-radius: 0.25rem;
@@ -70,7 +70,7 @@ export const SearchForm = ({
 
   return (
     <Form>
-      <Selector
+      <CategorySelector
         selectedCategory={categories}
         value={category}
         onChange={(category) => {
@@ -79,7 +79,7 @@ export const SearchForm = ({
         }}
       />
       <Row>
-        <label>Keyword</label>
+        <label>Keyword(s)</label>
         <TextInput
           type="text"
           value={search}

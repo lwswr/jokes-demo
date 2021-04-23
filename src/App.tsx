@@ -1,6 +1,12 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getInfo, getJokes, Joke } from "./API";
+import {
+  getInfo,
+  getJokes,
+  postNewJoke,
+  PostSingleJoke,
+  PostTwoPartJoke,
+} from "./API";
 import {
   AppState,
   Categories,
@@ -8,11 +14,14 @@ import {
   clearButtonClicked,
   dataFetched,
   infoDataFetched,
+  jokePosted,
+  newJokeSubmitted,
   searchTextUpdated,
 } from "./appSlice";
 import { JokeList } from "./JokeList";
 import styled from "styled-components";
 import { SearchForm } from "./SearchForm";
+import { NewJokeForm } from "./NewJokeForm";
 
 const Container = styled.div`
   width: 100vw;
@@ -22,7 +31,7 @@ const Container = styled.div`
   justify-content: center;
 `;
 
-const LeftColumn = styled.div`
+const UpperLeftColumn = styled.div`
   position: fixed;
   top: 3.5%;
   left: 2.5%;
@@ -31,6 +40,19 @@ const LeftColumn = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
+  border: 1px solid lightgrey;
+  border-radius: 0.5rem;
+  padding: 20px;
+`;
+
+const LowerLeftColumn = styled.div`
+  position: fixed;
+  top: 40%;
+  left: 2.5%;
+  width: 18%;
+  height: 40%;
+  display: flex;
+  flex-direction: column;
   border: 1px solid lightgrey;
   border-radius: 0.5rem;
   padding: 20px;
@@ -59,6 +81,7 @@ function App() {
       try {
         const jokesData = await getJokes(search, category);
         dispatch(dataFetched({ data: jokesData }));
+        console.log(jokesData);
       } catch (error) {
         console.log(error);
       }
@@ -66,15 +89,18 @@ function App() {
     getJokesData(state.search, state.category);
   }, [dispatch, state.search, state.category]);
 
-  // compute filtered list which is only rendered when the category "Any" is active
-  const filterList = (list: Joke[] | undefined, stateCategory: Categories) => {
-    return list?.filter((joke) => joke.category === stateCategory);
-  };
-
-  // filter the results of the request by category
-  const filteredList = state.data
-    ? filterList(state.data?.jokes, state.category)
-    : [];
+  useEffect(() => {
+    const postJoke = async (newJoke?: PostSingleJoke | PostTwoPartJoke) => {
+      try {
+        const res = await postNewJoke(newJoke);
+        dispatch(jokePosted({ postResponse: res }));
+        console.log(res);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    postJoke(state.newJoke);
+  });
 
   // calc sum of safejokes
   const safeJokesCount = state.info?.jokes.safeJokes.reduce(
@@ -84,7 +110,7 @@ function App() {
 
   return (
     <Container>
-      <LeftColumn>
+      <UpperLeftColumn>
         <div>
           There are a total of {state.info?.jokes.totalCount} jokes to browse,
           however seeing as you are in safe mode you can access {safeJokesCount}
@@ -107,14 +133,20 @@ function App() {
           {state.search !== "" ? <span> for "{state.search}"</span> : null} in "
           {state.category}"
         </div>
-      </LeftColumn>
+      </UpperLeftColumn>
+      <LowerLeftColumn>
+        <NewJokeForm
+          submitJoke={(newJoke) => {
+            dispatch(newJokeSubmitted({ newJoke: newJoke }));
+          }}
+        />
+        <div style={{ marginTop: "1rem" }}>
+          {state.postJokeResponse?.message}
+        </div>
+      </LowerLeftColumn>
 
       {/* Conditionally render the lsit of jokes based on whether the list is being filtered */}
-      {state.data?.jokes && state.category === "Any" ? (
-        <JokeList jokes={state.data.jokes} />
-      ) : state.category !== "Any" ? (
-        <JokeList jokes={filteredList} />
-      ) : null}
+      {state.data?.jokes ? <JokeList jokes={state.data.jokes} /> : null}
     </Container>
   );
 }
