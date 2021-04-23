@@ -31,7 +31,8 @@ export type SafeJokesCount = {
   count: number;
 };
 
-// copied response object and created type
+type JokeStyleType = "single" | "twopart";
+
 export type Info = {
   error: boolean;
   version: string;
@@ -39,7 +40,7 @@ export type Info = {
     totalCount: number;
     categories: string[];
     flags: string[];
-    types: ["single", "twopart"];
+    types: JokeStyleType;
     submissionURL: string;
     idRange: {
       cs: number[];
@@ -56,6 +57,54 @@ export type Info = {
   systemLanguages: number;
   info: string;
   timestamp: Date;
+};
+
+export type PostSingleJoke = {
+  formatVersion: number;
+  category: Categories;
+  type: "single";
+  joke: string;
+  flags: {
+    nsfw: boolean;
+    religious: boolean;
+    political: boolean;
+    racist: boolean;
+    sexist: boolean;
+    explicit: boolean;
+  };
+  lang: "en";
+  safe: true;
+};
+
+export type PostTwoPartJoke = {
+  formatVersion: number;
+  category: Categories;
+  type: "twopart";
+  setup: string;
+  delivery: string;
+  flags: {
+    nsfw: boolean;
+    religious: boolean;
+    political: boolean;
+    racist: boolean;
+    sexist: boolean;
+    explicit: boolean;
+  };
+  lang: "en";
+  safe: true;
+};
+
+export type PostJokeResponse = {
+  error: boolean;
+  message: string;
+  submission: PostSingleJoke | PostTwoPartJoke;
+  timestamp: number;
+};
+
+export const postNewJoke = async (joke?: PostSingleJoke | PostTwoPartJoke) => {
+  return axios
+    .post<PostJokeResponse>("https://v2.jokeapi.dev/submit", joke)
+    .then((res) => res.data);
 };
 
 export const getJokes = async (search: string, category: Categories) => {
