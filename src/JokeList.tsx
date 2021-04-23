@@ -8,6 +8,10 @@ const JokeListContainer = styled.div`
   display: flex;
   flex-direction: column;
   padding: 2rem;
+  @media only screen and (max-device-width: 768px) {
+    width: 91%;
+    position: relative;
+  }
 `;
 
 export const JokeList = ({ jokes }: { jokes?: Joke[] }) => {
