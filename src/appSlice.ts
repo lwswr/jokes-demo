@@ -1,5 +1,15 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { DataResponse, Info } from "./API";
+import {
+  DataResponse,
+  Info,
+  PostJokeResponse,
+  PostSingleJoke,
+  PostTwoPartJoke,
+} from "./API";
+import {
+  NewSingleJokeSubmitProps,
+  NewTwoPartJokeSubmitProps,
+} from "./NewJokeForm";
 
 // don't require "Dark" category as running API calls in safe mode
 export const categories = [
@@ -17,6 +27,8 @@ export type AppState = {
   info?: Info;
   category: Categories;
   search: string;
+  newJoke?: PostSingleJoke | PostTwoPartJoke;
+  postJokeResponse?: PostJokeResponse;
 };
 
 const initialState: AppState = {
@@ -24,6 +36,8 @@ const initialState: AppState = {
   info: undefined,
   category: "Any",
   search: "",
+  newJoke: undefined,
+  postJokeResponse: undefined,
 };
 
 export const appSlice = createSlice({
@@ -55,6 +69,57 @@ export const appSlice = createSlice({
       state.search = "";
       state.category = "Any";
     },
+    newJokeSubmitted: (
+      state,
+      {
+        payload,
+      }: PayloadAction<{
+        newJoke: NewSingleJokeSubmitProps | NewTwoPartJokeSubmitProps;
+      }>
+    ) => {
+      if (payload.newJoke.jokeType === "single") {
+        state.newJoke = {
+          formatVersion: 3,
+          category: payload.newJoke.category,
+          type: payload.newJoke.jokeType,
+          joke: payload.newJoke.joke,
+          flags: {
+            nsfw: false,
+            religious: false,
+            political: false,
+            racist: false,
+            sexist: false,
+            explicit: false,
+          },
+          lang: "en",
+          safe: true,
+        };
+      } else if (payload.newJoke.jokeType === "twopart") {
+        state.newJoke = {
+          formatVersion: 3,
+          category: payload.newJoke.category,
+          type: payload.newJoke.jokeType,
+          setup: payload.newJoke.setup,
+          delivery: payload.newJoke.delivery,
+          flags: {
+            nsfw: false,
+            religious: false,
+            political: false,
+            racist: false,
+            sexist: false,
+            explicit: false,
+          },
+          lang: "en",
+          safe: true,
+        };
+      }
+    },
+    jokePosted: (
+      state,
+      { payload }: PayloadAction<{ postResponse: PostJokeResponse }>
+    ) => {
+      state.postJokeResponse = payload.postResponse;
+    },
   },
 });
 
@@ -64,6 +129,8 @@ export const {
   categorySubmitted,
   searchTextUpdated,
   clearButtonClicked,
+  newJokeSubmitted,
+  jokePosted,
 } = appSlice.actions;
 
 export default appSlice.reducer;
