@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getInfo,
@@ -30,6 +30,13 @@ const Container = styled.div`
   flex-direction: row;
   justify-content: center;
   background: #e9e9e9;
+  @media only screen and (max-device-width: 768px) {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
 `;
 
 const UpperLeftColumn = styled.div`
@@ -45,6 +52,14 @@ const UpperLeftColumn = styled.div`
   border: 1px solid lightgrey;
   border-radius: 0.5rem;
   padding: 20px;
+  @media only screen and (max-device-width: 768px) {
+    width: 80%;
+    top: 0;
+    left: 0;
+    position: relative;
+    margin: 1rem 0;
+    height: 300px;
+  }
 `;
 
 const LowerLeftColumn = styled.div`
@@ -59,6 +74,12 @@ const LowerLeftColumn = styled.div`
   border: 1px solid lightgrey;
   border-radius: 0.5rem;
   padding: 20px;
+  @media only screen and (max-device-width: 768px) {
+    top: 0;
+    left: 0;
+    width: 80%;
+    position: relative;
+  }
 `;
 
 function App() {
@@ -92,18 +113,39 @@ function App() {
     getJokesData(state.search, state.category);
   }, [dispatch, state.search, state.category]);
 
+  const isInitialMount = useRef(true);
+
   useEffect(() => {
-    const postJoke = async (newJoke?: PostSingleJoke | PostTwoPartJoke) => {
-      try {
-        const res = await postNewJoke(newJoke);
-        dispatch(jokePosted({ postResponse: res }));
-        console.log(res);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    postJoke(state.newJoke);
-  });
+    // stopping axios post request on initial mount
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+    } else {
+      // post request now executed on update of newJoke state
+      const postJoke = async (newJoke?: PostSingleJoke | PostTwoPartJoke) => {
+        try {
+          const res = await postNewJoke(newJoke);
+          dispatch(jokePosted({ postResponse: res }));
+          console.log(res);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      postJoke(state.newJoke);
+    }
+  }, [dispatch, state.newJoke]);
+
+  // useEffect(() => {
+  //   const postJoke = async (newJoke?: PostSingleJoke | PostTwoPartJoke) => {
+  //     try {
+  //       const res = await postNewJoke(newJoke);
+  //       dispatch(jokePosted({ postResponse: res }));
+  //       console.log(res);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+  //   postJoke(state.newJoke);
+  // }, [dispatch, state.newJoke]);
 
   // calc sum of safejokes
   const safeJokesCount = state.info?.jokes.safeJokes.reduce(
