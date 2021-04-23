@@ -105,7 +105,6 @@ function App() {
       try {
         const jokesData = await getJokes(search, category);
         dispatch(dataFetched({ data: jokesData }));
-        console.log(jokesData);
       } catch (error) {
         console.log(error);
       }
@@ -125,7 +124,6 @@ function App() {
         try {
           const res = await postNewJoke(newJoke);
           dispatch(jokePosted({ postResponse: res }));
-          console.log(res);
         } catch (error) {
           console.log(error);
         }
