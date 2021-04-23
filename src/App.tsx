@@ -25,14 +25,16 @@ import { NewJokeForm } from "./NewJokeForm";
 
 const Container = styled.div`
   width: 100vw;
-  height: 100vh;
+  height: 100%;
   display: flex;
   flex-direction: row;
   justify-content: center;
+  background: #e9e9e9;
 `;
 
 const UpperLeftColumn = styled.div`
   position: fixed;
+  background: white;
   top: 3.5%;
   left: 2.5%;
   width: 18%;
@@ -47,6 +49,7 @@ const UpperLeftColumn = styled.div`
 
 const LowerLeftColumn = styled.div`
   position: fixed;
+  background: white;
   top: 40%;
   left: 2.5%;
   width: 18%;

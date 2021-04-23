@@ -22,6 +22,7 @@ export const categories = [
 ] as const;
 export type Categories = typeof categories[number];
 
+// create state structure type
 export type AppState = {
   data?: DataResponse;
   info?: Info;
@@ -31,6 +32,7 @@ export type AppState = {
   postJokeResponse?: PostJokeResponse;
 };
 
+// initialise state structure
 const initialState: AppState = {
   data: undefined,
   info: undefined,
@@ -44,6 +46,7 @@ export const appSlice = createSlice({
   name: "appSlice",
   initialState: initialState,
   reducers: {
+    // reducer functions actions named as events rather than commands
     dataFetched: (
       state,
       { payload }: PayloadAction<{ data: DataResponse }>
@@ -77,6 +80,7 @@ export const appSlice = createSlice({
         newJoke: NewSingleJokeSubmitProps | NewTwoPartJokeSubmitProps;
       }>
     ) => {
+      // if statement to assign vairables to correct data structure depending on joke type
       if (payload.newJoke.jokeType === "single") {
         state.newJoke = {
           formatVersion: 3,
@@ -123,6 +127,7 @@ export const appSlice = createSlice({
   },
 });
 
+// export the slice's reducer functions by destructurnng the reducers object
 export const {
   dataFetched,
   infoDataFetched,

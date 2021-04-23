@@ -3,7 +3,8 @@ import styled from "styled-components";
 import { Joke } from "./API";
 
 const JokeItemContainer = styled.div`
-  background: #d6d6d6;
+  background: white;
+  border: 1px solid lightgrey;
   color: black;
   border-radius: 0.5rem;
   padding: 1rem;
