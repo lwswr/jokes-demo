@@ -1,9 +1,9 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getInfo,
   getJokes,
-  postNewJoke,
+  postJoke,
   PostSingleJoke,
   PostTwoPartJoke,
 } from "./API";
@@ -15,7 +15,6 @@ import {
   dataFetched,
   infoDataFetched,
   jokePosted,
-  newJokeSubmitted,
   searchTextUpdated,
 } from "./appSlice";
 import { JokeList } from "./JokeList";
@@ -70,7 +69,7 @@ const SubmitJokeContainer = styled.div`
   top: 40%;
   left: 2.5%;
   width: 18%;
-  height: 40%;
+  height: 45%;
   display: flex;
   flex-direction: column;
   border: 1px solid lightgrey;
@@ -114,25 +113,14 @@ function App() {
     getJokesData(state.search, state.category);
   }, [dispatch, state.search, state.category]);
 
-  const isInitialMount = useRef(true);
-
-  useEffect(() => {
-    // stopping axios POST request on initial mount
-    if (isInitialMount.current) {
-      isInitialMount.current = false;
-    } else {
-      // post request now executed on update of newJoke state
-      const postJoke = async (newJoke?: PostSingleJoke | PostTwoPartJoke) => {
-        try {
-          const res = await postNewJoke(newJoke);
-          dispatch(jokePosted({ postResponse: res }));
-        } catch (error) {
-          console.log(error);
-        }
-      };
-      postJoke(state.newJoke);
+  const postNewJokeToAPI = async (joke: PostSingleJoke | PostTwoPartJoke) => {
+    try {
+      const res = await postJoke(joke);
+      dispatch(jokePosted({ postResponse: res }));
+    } catch (error) {
+      console.log(error);
     }
-  }, [dispatch, state.newJoke]);
+  };
 
   // calc sum of safejokes
   const safeJokesCount = state.info?.jokes.safeJokes.reduce(
@@ -143,7 +131,7 @@ function App() {
   return (
     <Container>
       <JokeSearchContainer>
-        <div>
+        <div style={{ fontSize: "15px" }}>
           There are a total of {state.info?.jokes.totalCount} jokes to browse,
           however seeing as you are in safe mode you can access {safeJokesCount}
           .
@@ -169,7 +157,7 @@ function App() {
       <SubmitJokeContainer>
         <NewJokeForm
           submitJoke={(newJoke) => {
-            dispatch(newJokeSubmitted({ newJoke: newJoke }));
+            postNewJokeToAPI(newJoke);
           }}
         />
         <div style={{ marginTop: "1rem" }}>
