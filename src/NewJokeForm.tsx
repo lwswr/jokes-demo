@@ -3,7 +3,8 @@ import { useCallback, useMemo, useState } from "react";
 import styled from "styled-components";
 import { categories, Categories } from "./appSlice";
 import { CategorySelector } from "./CategorySelector";
-import { debounce } from "debounce";
+import { debounce } from "throttle-debounce";
+import { PostSingleJoke, PostTwoPartJoke } from "./API";
 
 const Form = styled.form`
   width: 100%;
@@ -103,7 +104,7 @@ export type TwoPartJokeSubmitProps = {
 export const NewJokeForm = ({
   submitJoke,
 }: {
-  submitJoke: (newJoke: SingleJokeSubmitProps | TwoPartJokeSubmitProps) => void;
+  submitJoke: (newJoke: PostSingleJoke | PostTwoPartJoke) => void;
 }) => {
   // local state
   const [jokeType, setJokeType] = useState<"single" | "twopart">("single");
@@ -113,23 +114,49 @@ export const NewJokeForm = ({
   const [delivery, setDelivery] = useState<string>("");
 
   const onSubmit = useCallback(() => {
+    if (category === "Any") {
+      alert("Please choose a category");
+      return null;
+    }
     if (jokeType === "single") {
       submitJoke({
-        jokeType: jokeType,
+        formatVersion: 3,
         category: category,
+        type: jokeType,
         joke: joke,
+        flags: {
+          nsfw: false,
+          religious: false,
+          political: false,
+          racist: false,
+          sexist: false,
+          explicit: false,
+        },
+        lang: "en",
+        safe: true,
       });
     } else if (jokeType === "twopart") {
       submitJoke({
-        jokeType: jokeType,
+        formatVersion: 3,
         category: category,
+        type: jokeType,
         setup: setup,
         delivery: delivery,
+        flags: {
+          nsfw: false,
+          religious: false,
+          political: false,
+          racist: false,
+          sexist: false,
+          explicit: false,
+        },
+        lang: "en",
+        safe: true,
       });
     }
   }, [category, delivery, joke, jokeType, setup, submitJoke]);
 
-  const debounced = useMemo(() => debounce(onSubmit, 1000), [onSubmit]);
+  const debounced = useMemo(() => debounce(1000, onSubmit), [onSubmit]);
 
   return (
     <Form
@@ -137,6 +164,7 @@ export const NewJokeForm = ({
         e.preventDefault();
         debounced();
       }}
+      data-testid="newJokeForm"
     >
       <div style={{ marginBottom: "1rem" }}>Submit your own joke!</div>
       <Row>
@@ -168,6 +196,7 @@ export const NewJokeForm = ({
               onChange={(e) => {
                 setJoke(e.target.value);
               }}
+              data-testid={"jokeTextField"}
               required
             />
           </Row>
@@ -198,7 +227,9 @@ export const NewJokeForm = ({
           </Row>
         </div>
       )}
-      <Button type="submit">Submit</Button>
+      <Button type="submit" data-testid={"jokeSubmitButton"}>
+        Submit
+      </Button>
     </Form>
   );
 };

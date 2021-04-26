@@ -1,6 +1,8 @@
 import * as React from "react";
+import { useCallback, useMemo } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
+import { throttle } from "throttle-debounce";
 import { AppState, Categories, categories } from "./appSlice";
 import { CategorySelector } from "./CategorySelector";
 
@@ -68,6 +70,17 @@ export const SearchForm = ({
   const { search } = useSelector(selectState);
   const [category, setCategory] = React.useState<Categories>("Any");
 
+  const handleChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      onChange(e.target.value);
+    },
+    [onChange]
+  );
+
+  const debounced = useMemo(() => {
+    return throttle(333, handleChange);
+  }, [handleChange]);
+
   return (
     <Form>
       <CategorySelector
@@ -80,11 +93,7 @@ export const SearchForm = ({
       />
       <Row>
         <label>Keyword(s)</label>
-        <TextInput
-          type="text"
-          value={search}
-          onChange={(e) => onChange(e.target.value)}
-        />
+        <TextInput type="text" value={search} onChange={(e) => debounced(e)} />
       </Row>
       <Button
         onClick={(e) => {

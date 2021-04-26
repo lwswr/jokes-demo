@@ -9,7 +9,6 @@
     "@testing-library/react": "^11.2.6",
     "@testing-library/user-event": "^12.8.3",
     "@types/axios": "^0.14.0",
-    "@types/debounce": "^1.2.0",
     "@types/jest": "^26.0.22",
     "@types/node": "^12.20.10",
     "@types/react": "^17.0.3",
@@ -18,7 +17,6 @@
     "@types/redux": "^3.6.0",
     "@types/styled-components": "^5.1.9",
     "axios": "^0.21.1",
-    "debounce": "^1.2.1",
     "gh-pages": "^3.1.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -26,6 +24,7 @@
     "react-scripts": "4.0.3",
     "redux": "^4.0.5",
     "styled-components": "^5.2.3",
+    "throttle-debounce": "^3.0.1",
     "typescript": "^4.2.4",
     "web-vitals": "^1.1.1"
   },
@@ -56,6 +55,7 @@
     ]
   },
   "devDependencies": {
+    "@types/throttle-debounce": "^2.1.0",
     "gh-pages": "^3.1.0"
   }
 }
