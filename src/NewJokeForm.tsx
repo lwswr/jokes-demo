@@ -1,8 +1,9 @@
 import * as React from "react";
-import { useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import styled from "styled-components";
 import { categories, Categories } from "./appSlice";
 import { CategorySelector } from "./CategorySelector";
+import { debounce } from "debounce";
 
 const Form = styled.form`
   width: 100%;
@@ -86,13 +87,13 @@ const SetupInput = styled.input`
   }
 `;
 
-export type NewSingleJokeSubmitProps = {
+export type SingleJokeSubmitProps = {
   jokeType: "single";
   category: Categories;
   joke: string;
 };
 
-export type NewTwoPartJokeSubmitProps = {
+export type TwoPartJokeSubmitProps = {
   jokeType: "twopart";
   category: Categories;
   setup: string;
@@ -102,34 +103,39 @@ export type NewTwoPartJokeSubmitProps = {
 export const NewJokeForm = ({
   submitJoke,
 }: {
-  submitJoke: (
-    newJoke: NewSingleJokeSubmitProps | NewTwoPartJokeSubmitProps
-  ) => void;
+  submitJoke: (newJoke: SingleJokeSubmitProps | TwoPartJokeSubmitProps) => void;
 }) => {
+  // local state
   const [jokeType, setJokeType] = useState<"single" | "twopart">("single");
   const [joke, setJoke] = useState<string>("");
   const [category, setCategory] = useState<Categories>("Any");
   const [setup, setSetup] = useState<string>("");
   const [delivery, setDelivery] = useState<string>("");
 
+  const onSubmit = useCallback(() => {
+    if (jokeType === "single") {
+      submitJoke({
+        jokeType: jokeType,
+        category: category,
+        joke: joke,
+      });
+    } else if (jokeType === "twopart") {
+      submitJoke({
+        jokeType: jokeType,
+        category: category,
+        setup: setup,
+        delivery: delivery,
+      });
+    }
+  }, [category, delivery, joke, jokeType, setup, submitJoke]);
+
+  const debounced = useMemo(() => debounce(onSubmit, 1000), [onSubmit]);
+
   return (
     <Form
       onSubmit={(e) => {
         e.preventDefault();
-        if (jokeType === "single") {
-          submitJoke({
-            jokeType: jokeType,
-            category: category,
-            joke: joke,
-          });
-        } else if (jokeType === "twopart") {
-          submitJoke({
-            jokeType: jokeType,
-            category: category,
-            setup: setup,
-            delivery: delivery,
-          });
-        }
+        debounced();
       }}
     >
       <div style={{ marginBottom: "1rem" }}>Submit your own joke!</div>
