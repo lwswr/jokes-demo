@@ -1,20 +1,20 @@
 {
   "files": {
     "main.css": "/jokes-demo/static/css/main.b0f70ea7.chunk.css",
-    "main.js": "/jokes-demo/static/js/main.157a6208.chunk.js",
-    "main.js.map": "/jokes-demo/static/js/main.157a6208.chunk.js.map",
+    "main.js": "/jokes-demo/static/js/main.bdd2ff28.chunk.js",
+    "main.js.map": "/jokes-demo/static/js/main.bdd2ff28.chunk.js.map",
     "runtime-main.js": "/jokes-demo/static/js/runtime-main.1021466f.js",
     "runtime-main.js.map": "/jokes-demo/static/js/runtime-main.1021466f.js.map",
-    "static/js/2.4ef6bb4b.chunk.js": "/jokes-demo/static/js/2.4ef6bb4b.chunk.js",
-    "static/js/2.4ef6bb4b.chunk.js.map": "/jokes-demo/static/js/2.4ef6bb4b.chunk.js.map",
+    "static/js/2.d223f6da.chunk.js": "/jokes-demo/static/js/2.d223f6da.chunk.js",
+    "static/js/2.d223f6da.chunk.js.map": "/jokes-demo/static/js/2.d223f6da.chunk.js.map",
     "index.html": "/jokes-demo/index.html",
     "static/css/main.b0f70ea7.chunk.css.map": "/jokes-demo/static/css/main.b0f70ea7.chunk.css.map",
-    "static/js/2.4ef6bb4b.chunk.js.LICENSE.txt": "/jokes-demo/static/js/2.4ef6bb4b.chunk.js.LICENSE.txt"
+    "static/js/2.d223f6da.chunk.js.LICENSE.txt": "/jokes-demo/static/js/2.d223f6da.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.1021466f.js",
-    "static/js/2.4ef6bb4b.chunk.js",
+    "static/js/2.d223f6da.chunk.js",
     "static/css/main.b0f70ea7.chunk.css",
-    "static/js/main.157a6208.chunk.js"
+    "static/js/main.bdd2ff28.chunk.js"
   ]
 }
