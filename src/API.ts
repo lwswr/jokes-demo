@@ -101,7 +101,7 @@ export type PostJokeResponse = {
   timestamp: number;
 };
 
-export const postNewJoke = async (joke?: PostSingleJoke | PostTwoPartJoke) => {
+export const postJoke = async (joke: PostSingleJoke | PostTwoPartJoke) => {
   return axios
     .post<PostJokeResponse>("https://v2.jokeapi.dev/submit", joke)
     .then((res) => res.data);
