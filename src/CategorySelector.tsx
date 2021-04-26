@@ -38,6 +38,7 @@ export const CategorySelector = ({
       <SelectorField
         value={value ?? selectedCategory}
         onChange={(e) => onChange(e.target.value as any)}
+        data-testid={"categorySelector"}
       >
         {categories.map((category) => {
           return (
