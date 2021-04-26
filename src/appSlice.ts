@@ -8,6 +8,7 @@ import {
 } from "./API";
 
 // don't require "Dark" category as running API calls in safe mode
+// infering a string union from an array of strings
 export const categories = [
   "Any",
   "Misc",
