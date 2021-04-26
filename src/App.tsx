@@ -23,6 +23,8 @@ import styled from "styled-components";
 import { SearchForm } from "./SearchForm";
 import { NewJokeForm } from "./NewJokeForm";
 
+document.title = "Jokes Demo";
+
 const Container = styled.div`
   width: 100vw;
   height: 100%;
@@ -39,7 +41,7 @@ const Container = styled.div`
   }
 `;
 
-const UpperLeftColumn = styled.div`
+const JokeSearchContainer = styled.div`
   position: fixed;
   background: white;
   top: 3.5%;
@@ -62,7 +64,7 @@ const UpperLeftColumn = styled.div`
   }
 `;
 
-const LowerLeftColumn = styled.div`
+const SubmitJokeContainer = styled.div`
   position: fixed;
   background: white;
   top: 40%;
@@ -115,7 +117,7 @@ function App() {
   const isInitialMount = useRef(true);
 
   useEffect(() => {
-    // stopping axios post request on initial mount
+    // stopping axios POST request on initial mount
     if (isInitialMount.current) {
       isInitialMount.current = false;
     } else {
@@ -132,19 +134,6 @@ function App() {
     }
   }, [dispatch, state.newJoke]);
 
-  // useEffect(() => {
-  //   const postJoke = async (newJoke?: PostSingleJoke | PostTwoPartJoke) => {
-  //     try {
-  //       const res = await postNewJoke(newJoke);
-  //       dispatch(jokePosted({ postResponse: res }));
-  //       console.log(res);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
-  //   postJoke(state.newJoke);
-  // }, [dispatch, state.newJoke]);
-
   // calc sum of safejokes
   const safeJokesCount = state.info?.jokes.safeJokes.reduce(
     (accum, item) => accum + item.count,
@@ -153,7 +142,7 @@ function App() {
 
   return (
     <Container>
-      <UpperLeftColumn>
+      <JokeSearchContainer>
         <div>
           There are a total of {state.info?.jokes.totalCount} jokes to browse,
           however seeing as you are in safe mode you can access {safeJokesCount}
@@ -176,8 +165,8 @@ function App() {
           {state.search !== "" ? <span> for "{state.search}"</span> : null} in "
           {state.category}"
         </div>
-      </UpperLeftColumn>
-      <LowerLeftColumn>
+      </JokeSearchContainer>
+      <SubmitJokeContainer>
         <NewJokeForm
           submitJoke={(newJoke) => {
             dispatch(newJokeSubmitted({ newJoke: newJoke }));
@@ -186,7 +175,7 @@ function App() {
         <div style={{ marginTop: "1rem" }}>
           {state.postJokeResponse?.message}
         </div>
-      </LowerLeftColumn>
+      </SubmitJokeContainer>
 
       {/* Conditionally render the lsit of jokes based on whether the list is being filtered */}
       {state.data?.jokes ? <JokeList jokes={state.data.jokes} /> : null}
