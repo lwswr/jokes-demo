@@ -113,6 +113,7 @@ function App() {
     getJokesData(state.search, state.category);
   }, [dispatch, state.search, state.category]);
 
+  // post new joke to api on form submission
   const postNewJokeToAPI = async (joke: PostSingleJoke | PostTwoPartJoke) => {
     try {
       const res = await postJoke(joke);
