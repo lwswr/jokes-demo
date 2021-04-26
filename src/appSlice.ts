@@ -7,8 +7,8 @@ import {
   PostTwoPartJoke,
 } from "./API";
 import {
-  NewSingleJokeSubmitProps,
-  NewTwoPartJokeSubmitProps,
+  SingleJokeSubmitProps,
+  TwoPartJokeSubmitProps,
 } from "./NewJokeForm";
 
 // don't require "Dark" category as running API calls in safe mode
@@ -70,6 +70,7 @@ export const appSlice = createSlice({
     },
     clearButtonClicked: (state) => {
       state.search = "";
+
       state.category = "Any";
     },
     newJokeSubmitted: (
@@ -77,10 +78,15 @@ export const appSlice = createSlice({
       {
         payload,
       }: PayloadAction<{
-        newJoke: NewSingleJokeSubmitProps | NewTwoPartJokeSubmitProps;
+        newJoke: SingleJokeSubmitProps | TwoPartJokeSubmitProps;
       }>
     ) => {
+      if (payload.newJoke.category === "Any") {
+        alert("Please choose a category");
+        return state;
+      }
       // if statement to assign vairables to correct data structure depending on joke type
+      console.log("Waited for one second");
       if (payload.newJoke.jokeType === "single") {
         state.newJoke = {
           formatVersion: 3,
