@@ -77,8 +77,9 @@ export const SearchForm = ({
     [onChange]
   );
 
-  const debounced = useMemo(() => {
-    return throttle(333, handleChange);
+  // Added to optimise general api get requests, however quick succession calls to JokesAPI seem fine if this throttle wasn't present.
+  const throttled = useMemo(() => {
+    return throttle(100, handleChange);
   }, [handleChange]);
 
   return (
@@ -93,7 +94,7 @@ export const SearchForm = ({
       />
       <Row>
         <label style={{ fontSize: "13px" }}>Keyword(s)</label>
-        <TextInput type="text" value={search} onChange={(e) => debounced(e)} />
+        <TextInput type="text" value={search} onChange={(e) => throttled(e)} />
       </Row>
       <Button
         onClick={(e) => {
