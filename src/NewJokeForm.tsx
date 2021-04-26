@@ -169,7 +169,7 @@ export const NewJokeForm = ({
       <div style={{ marginBottom: "1rem" }}>Submit your own joke!</div>
       <Row>
         <CategorySelector
-          selectedCategory={categories}
+          categories={categories}
           value={category}
           onChange={(category) => {
             setCategory(category);
@@ -177,7 +177,7 @@ export const NewJokeForm = ({
         />
       </Row>
       <Row>
-        <label>Joke Type</label>
+        <label style={{ fontSize: "13px" }}>Joke Type</label>
         <SelectorField
           onChange={(e) => setJokeType(e.target.value as any)}
           required
@@ -189,7 +189,7 @@ export const NewJokeForm = ({
       {jokeType === "single" ? (
         <div>
           <Row>
-            <label>Joke</label>
+            <label style={{ fontSize: "13px" }}>Joke</label>
             <TextInput
               type="text"
               value={joke}
@@ -204,7 +204,7 @@ export const NewJokeForm = ({
       ) : (
         <div>
           <Row>
-            <label>Setup</label>
+            <label style={{ fontSize: "13px" }}>Setup</label>
             <SetupInput
               type="text"
               value={setup}
@@ -215,7 +215,7 @@ export const NewJokeForm = ({
             />
           </Row>
           <Row>
-            <label>Delivery</label>
+            <label style={{ fontSize: "13px" }}>Delivery</label>
             <SetupInput
               type="text"
               value={delivery}

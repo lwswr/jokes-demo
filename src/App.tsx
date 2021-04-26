@@ -160,7 +160,7 @@ function App() {
             postNewJokeToAPI(newJoke);
           }}
         />
-        <div style={{ marginTop: "1rem" }}>
+        <div style={{ marginTop: "1rem", fontSize: "15px" }}>
           {state.postJokeResponse?.message}
         </div>
       </SubmitJokeContainer>

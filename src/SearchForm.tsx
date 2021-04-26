@@ -84,7 +84,7 @@ export const SearchForm = ({
   return (
     <Form>
       <CategorySelector
-        selectedCategory={categories}
+        categories={categories}
         value={category}
         onChange={(category) => {
           submit(category);
@@ -92,7 +92,7 @@ export const SearchForm = ({
         }}
       />
       <Row>
-        <label>Keyword(s)</label>
+        <label style={{ fontSize: "13px" }}>Keyword(s)</label>
         <TextInput type="text" value={search} onChange={(e) => debounced(e)} />
       </Row>
       <Button

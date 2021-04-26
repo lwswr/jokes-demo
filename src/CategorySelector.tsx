@@ -1,6 +1,6 @@
 import * as React from "react";
 import styled from "styled-components";
-import { categories, Categories } from "./appSlice";
+import { Categories } from "./appSlice";
 
 const SelectorContainer = styled.div`
   width: 100%;
@@ -24,19 +24,19 @@ const SelectorField = styled.select`
 `;
 
 export const CategorySelector = ({
-  selectedCategory,
+  categories,
   value,
   onChange,
 }: {
-  selectedCategory: Readonly<Categories[]>;
+  categories: Readonly<Categories[]>;
   value: Categories;
   onChange: (category: Categories) => void;
 }) => {
   return (
     <SelectorContainer>
-      <label>Category</label>
+      <label style={{ fontSize: "13px" }}>Category</label>
       <SelectorField
-        value={value ?? selectedCategory}
+        value={value ?? categories}
         onChange={(e) => onChange(e.target.value as any)}
         data-testid={"categorySelector"}
       >
