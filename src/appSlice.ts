@@ -6,10 +6,6 @@ import {
   PostSingleJoke,
   PostTwoPartJoke,
 } from "./API";
-import {
-  SingleJokeSubmitProps,
-  TwoPartJokeSubmitProps,
-} from "./NewJokeForm";
 
 // don't require "Dark" category as running API calls in safe mode
 export const categories = [
@@ -70,59 +66,7 @@ export const appSlice = createSlice({
     },
     clearButtonClicked: (state) => {
       state.search = "";
-
       state.category = "Any";
-    },
-    newJokeSubmitted: (
-      state,
-      {
-        payload,
-      }: PayloadAction<{
-        newJoke: SingleJokeSubmitProps | TwoPartJokeSubmitProps;
-      }>
-    ) => {
-      if (payload.newJoke.category === "Any") {
-        alert("Please choose a category");
-        return state;
-      }
-      // if statement to assign vairables to correct data structure depending on joke type
-      console.log("Waited for one second");
-      if (payload.newJoke.jokeType === "single") {
-        state.newJoke = {
-          formatVersion: 3,
-          category: payload.newJoke.category,
-          type: payload.newJoke.jokeType,
-          joke: payload.newJoke.joke,
-          flags: {
-            nsfw: false,
-            religious: false,
-            political: false,
-            racist: false,
-            sexist: false,
-            explicit: false,
-          },
-          lang: "en",
-          safe: true,
-        };
-      } else if (payload.newJoke.jokeType === "twopart") {
-        state.newJoke = {
-          formatVersion: 3,
-          category: payload.newJoke.category,
-          type: payload.newJoke.jokeType,
-          setup: payload.newJoke.setup,
-          delivery: payload.newJoke.delivery,
-          flags: {
-            nsfw: false,
-            religious: false,
-            political: false,
-            racist: false,
-            sexist: false,
-            explicit: false,
-          },
-          lang: "en",
-          safe: true,
-        };
-      }
     },
     jokePosted: (
       state,
@@ -140,7 +84,6 @@ export const {
   categorySubmitted,
   searchTextUpdated,
   clearButtonClicked,
-  newJokeSubmitted,
   jokePosted,
 } = appSlice.actions;
 
