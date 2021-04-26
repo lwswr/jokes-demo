@@ -45,7 +45,7 @@ export const JokeListItem = ({ joke }: { joke: Joke }) => {
 // Two seperate components to display the two styles of joke
 export const TwoPartJoke = ({ joke }: { joke: Joke }) => {
   return (
-    <JokeItemContainer>
+    <JokeItemContainer data-testid={"jokeListItem"}>
       <Setup>{joke.setup}</Setup>
       <Answer> - {joke.delivery}</Answer>
       <Category>{joke.category}</Category>
@@ -55,7 +55,7 @@ export const TwoPartJoke = ({ joke }: { joke: Joke }) => {
 
 export const SingleJoke = ({ joke }: { joke: Joke }) => {
   return (
-    <JokeItemContainer>
+    <JokeItemContainer data-testid={"jokeListItem"}>
       <Setup>{joke.joke}</Setup>
       <Category>{joke.category}</Category>
     </JokeItemContainer>
