@@ -114,10 +114,12 @@ export const NewJokeForm = ({
   const [delivery, setDelivery] = useState<string>("");
 
   const onSubmit = useCallback(() => {
+    // basic validation stops category "Any" being entered
     if (category === "Any") {
       alert("Please choose a category");
       return null;
     }
+    // formatting the inputted values with the hard coded ones
     if (jokeType === "single") {
       submitJoke({
         formatVersion: 3,
@@ -156,6 +158,7 @@ export const NewJokeForm = ({
     }
   }, [category, delivery, joke, jokeType, setup, submitJoke]);
 
+  // optimising to prevent spamming of the submit button
   const debounced = useMemo(() => debounce(1000, onSubmit), [onSubmit]);
 
   return (
